@@ -1238,12 +1238,14 @@ class Scss(object):
                                     try:
                                         full_filename = os.path.join(full_path, '_' + filename)
                                         i_codestr = open(full_filename + '.scss').read()
+                                        full_filename += '.scss'
                                     except IOError:
                                         if os.path.exists(full_filename + '.sass'):
                                             unsupported.append(full_filename + '.sass')
                                         try:
                                             full_filename = os.path.join(full_path, filename)
                                             i_codestr = open(full_filename + '.scss').read()
+                                            full_filename += '.scss'
                                         except IOError:
                                             if os.path.exists(full_filename + '.sass'):
                                                 unsupported.append(full_filename + '.sass')
