@@ -720,6 +720,7 @@ class Scss(object):
 
         # Initialize
         self.css_files = []
+        self._depends = []
 
         self.scss_vars = _default_scss_vars.copy()
         if self._scss_vars is not None:
@@ -788,8 +789,14 @@ class Scss(object):
         return final_cont
     compile = Compilation
 
+    @property
+    def dependencies(self):
+        return self._depends
+
     def load_string(self, codestr, filename=None):
         if filename is not None:
+            self._depends.append(filename)
+
             codestr += '\n'
 
             idx = {
