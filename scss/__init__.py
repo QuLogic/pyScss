@@ -3876,25 +3876,26 @@ def _append_selector(selector, to_append):
 
 
 def _headers(frm=None, to=None):
+    FIRST, LAST = 1, 6
     if frm and to is None:
         if isinstance(frm, StringValue) and frm.value.lower() == 'all':
-            frm = 1
-            to = 6
+            frm = FIRST
+            to = LAST
         else:
-            frm = 1
             try:
-                to = int(getattr(frm, 'value', frm))
+                to = int(getattr(frm, 'value', FIRST))
             except ValueError:
-                to = 6
+                to = LAST
+            frm = FIRST
     else:
         try:
-            frm = 1 if frm is None else int(getattr(frm, 'value', frm))
+            frm = FIRST if frm is None else int(getattr(frm, 'value', frm))
         except ValueError:
-            frm = 1
+            frm = FIRST
         try:
-            to = 6 if to is None else int(getattr(to, 'value', to))
+            to = LAST if to is None else int(getattr(to, 'value', to))
         except ValueError:
-            to = 6
+            to = LAST
     ret = ['h' + str(i) for i in range(frm, to + 1)]
     ret = dict(enumerate(ret))
     ret['_'] = ','
