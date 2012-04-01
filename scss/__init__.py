@@ -722,6 +722,7 @@ class Scss(object):
 
         # Initialize
         self.css_files = []
+        self._depends = []
 
         self.scss_vars = _default_scss_vars.copy()
         if self._scss_vars is not None:
@@ -790,8 +791,14 @@ class Scss(object):
         return final_cont
     compile = Compilation
 
+    @property
+    def dependencies(self):
+        return self._depends
+
     def load_string(self, codestr, filename=None):
         if filename is not None:
+            self._depends.append(filename)
+
             codestr += '\n'
 
             idx = {
@@ -1240,12 +1247,14 @@ class Scss(object):
                                     try:
                                         full_filename = os.path.join(full_path, '_' + filename)
                                         i_codestr = codecs.open(full_filename + '.scss', encoding='utf8').read()
+                                        full_filename += '.scss'
                                     except IOError:
                                         if os.path.exists(full_filename + '.sass'):
                                             unsupported.append(full_filename + '.sass')
                                         try:
                                             full_filename = os.path.join(full_path, filename)
                                             i_codestr = codecs.open(full_filename + '.scss', encoding='utf8').read()
+                                            full_filename += '.scss'
                                         except IOError:
                                             if os.path.exists(full_filename + '.sass'):
                                                 unsupported.append(full_filename + '.sass')
